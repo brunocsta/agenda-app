@@ -1,10 +1,15 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const PORT = 3000;
 const mongoose = require('mongoose');
-const connectionString = 'mongodb+srv://bcostamartins:M2NK0fvOPOSfUiwt@expressapi.dfhzomx.mongodb.net/?retryWrites=true&w=majority&appName=ExpressAPI';
 
-mongoose.connect(connectionString, { useNewUrlParser: true});
+mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        app.emit('listening');
+    })
+    .catch(e => console.log(e)
+);
 
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -13,13 +18,17 @@ const flash = require('connect-flash');
 
 const routes = require('./routes');
 const path = require('path');
-const {middlewareGlobal} = require('./src/middlewares/middeware');
+const helmet = require('helmet');
+const csrf = require('csurf');
+const {middlewareGlobal, checkCsrfError, csrfMiddleware} = require('./src/middlewares/middeware');
 
+app.use(helmet());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.resolve(__dirname, 'public')));
 
 const sessionOptions = session({
-    secret: 'asdfasdfasdfasdfasdfasdfaasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasd',
-    store: MongoStore.create({ mongoUrl: 'mongodb+srv://bcostamartins:M2NK0fvOPOSfUiwt@expressapi.dfhzomx.mongodb.net/?retryWrites=true&w=majority&appName=ExpressAPI' }),
+    secret: 'ASDdhfsa84654asdiISHDUS!sndfn_asnd!@64',
+    store: MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }),
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -35,12 +44,18 @@ app.use(flash())
 app.set('views', path.resolve(__dirname, 'src', 'views'));
 app.set('view engine', 'ejs');
 
+app.use(csrf())
 //Middlewares
 app.use(middlewareGlobal);
+app.use(checkCsrfError);
+app.use(csrfMiddleware);
 app.use(routes);
 
 
-app.listen(3000, () => {
-    console.log(`Acessar http://localhost:${PORT}`);
-    console.log(`Servidor executando na porta ${PORT}`);
+app.on('listening', () => {
+    app.listen(PORT, () => {
+        console.log('Connectado ao MongoDB');
+        console.log('Acesse http://localhost:3000');
+        console.log(`Servidor executando na porta ${PORT}`);
+    });
 });
