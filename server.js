@@ -53,7 +53,7 @@ app.use(routes);
 
 
 app.on('listening', () => {
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
         console.log('Connectado ao MongoDB');
         console.log('Acesse http://localhost:3000');
         console.log(`Servidor executando na porta ${PORT}`);

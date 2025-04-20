@@ -1,4 +1,4 @@
-exports.paginaInicial = (req, res) => {
+exports.index = (req, res) => {
 
     res.render('index');
 }
