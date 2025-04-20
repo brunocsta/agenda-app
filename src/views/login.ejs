@@ -37,7 +37,7 @@
           <p>Faça login para acessar sua lista de contatos.</p>
 
           <form class="form-login" action="/login/access" method="POST">
-            <input type="hidden" name="_csrf" >
+            <input type="hidden" name="_csrf" value="<%= csrfToken %> " >
             <div class="form-group">
               <label>Seu e-mail</label>
               <input type="email" class="form-control" name="email">
