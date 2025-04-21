@@ -10,6 +10,7 @@
 		"test": " REGRESSION_TESTING=true npm start"
 	},
 	"dependencies": {
+		"bcryptjs": "^3.0.2",
 		"connect-flash": "^0.1.1",
 		"connect-mongo": "^5.1.0",
 		"core-js": "^3.9.1",
