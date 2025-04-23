@@ -4,7 +4,7 @@ const app = express();
 const PORT = 3000;
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.CONNECTIONSTRING, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         app.emit('listening');
     })
@@ -28,7 +28,7 @@ app.use(express.static(path.resolve(__dirname, 'public')));
 
 const sessionOptions = session({
     secret: 'ASDdhfsa84654asdiISHDUS!sndfn_asnd!@64',
-    store: MongoStore.create({ mongoUrl: process.env.CONNECTIONSTRING }),
+    store: MongoStore.create({ mongoUrl: process.env.CONNECTION_STRING }),
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -57,5 +57,7 @@ app.on('listening', () => {
         console.log('Connectado ao MongoDB');
         console.log('Acesse http://localhost:3000');
         console.log(`Servidor executando na porta ${PORT}`);
+        const hora = Date;
+        console.log(hora.now)
     });
 });
