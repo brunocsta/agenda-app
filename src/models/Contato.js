@@ -52,6 +52,13 @@ class Contato {
             telefone: this.body.telefone,
         };
     }
+   
+    async edit(id){
+        if( typeof id !== 'string') return;
+        this.valida();
+        if(this.errors.length > 0) return;
+        this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {new: true})
+    }
 
     static async buscaPorId(id) {
           if(typeof id !== 'string') return;
@@ -59,11 +66,16 @@ class Contato {
           return contato;
     }
 
-    async edit(id){
-        if( typeof id !== 'string') return;
-        this.valida();
-        if(this.errors.length > 0) return;
-        this.contato = await ContatoModel.findByIdAndUpdate(id, this.body, {new: true})
+    static async buscaContatos() {
+          const contato = await ContatoModel.find()
+              .sort( { criadoEm: -1 } );
+          return contato;
+    }
+
+    static async delete(id) {
+        if(typeof id !== 'string') return;
+        const contato = await ContatoModel.findByIdAndDelete({_id: id});
+        return contato;
     }
 }
 
