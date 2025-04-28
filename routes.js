@@ -3,7 +3,7 @@ const route = express.Router();
 const home = require("./src/controllers/home");
 const login = require("./src/controllers/login");
 const contato = require("./src/controllers/contato");
-const { loginRequired } = require('./src/middlewares/middeware')
+const { loginRequired, saveLastUrl } = require('./src/middlewares/middeware')
 //Rotas da home
 route.get("/", home.index);
 
@@ -15,8 +15,9 @@ route.post("/login/register", login.register);
 route.post("/login/login", login.login);
 
 //rotas de contato
-route.get("/contato/index", loginRequired, contato.index);
+route.get("/contato/index", loginRequired, saveLastUrl, contato.index);
 route.post("/contato/register", loginRequired, contato.register);
-route.get("/contato/index/:id", loginRequired, contato.editIndex);
+route.get("/contato/index/:id", loginRequired, saveLastUrl, contato.editIndex);
+route.post("/contato/edit/:id", loginRequired, contato.edit);
 
 module.exports = route;
