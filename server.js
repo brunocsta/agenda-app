@@ -4,7 +4,7 @@ const app = express();
 const PORT = 3000;
 const mongoose = require('mongoose');
 
-mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => {
         app.emit('listening');
     })
