@@ -61,4 +61,5 @@ app.on('listening', () => {
         console.log(`Acesse: http://${host}:${port}`);
         console.log(`Servidor executando na porta ${port}`);
         console.log(`Data/hora atual: ${new Date().toLocaleString()}`);
+    });
 });
