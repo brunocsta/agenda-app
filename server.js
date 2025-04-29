@@ -1,7 +1,6 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
-const PORT = 3000;
 const mongoose = require('mongoose');
 
 mongoose.connect(process.env.CONNECTION_STRING, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
@@ -53,11 +52,13 @@ app.use(routes);
 
 
 app.on('listening', () => {
-    app.listen(PORT, '0.0.0.0', () => {
-        console.log('Connectado ao MongoDB');
-        console.log('Acesse http://localhost:3000');
-        console.log(`Servidor executando na porta ${PORT}`);
-        const hora = Date;
-        console.log(hora.now)
-    });
+    const server = app.listen(PORT || 0, '0.0.0.0', () => {
+        const address = server.address();
+        const host = address.address === '::' ? 'localhost' : address.address;
+        const port = address.port;
+
+        console.log('Conectado ao MongoDB');
+        console.log(`Acesse: http://${host}:${port}`);
+        console.log(`Servidor executando na porta ${port}`);
+        console.log(`Data/hora atual: ${new Date().toLocaleString()}`);
 });
